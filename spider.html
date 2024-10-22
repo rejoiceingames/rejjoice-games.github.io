@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hello Kitty Racing Game</title>
   <style>
-    /* Your existing CSS */
+    
     * {
       margin: 0;
       padding: 0;
@@ -16,24 +16,24 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #ffccf9; /* Light pink background */
+      background-color: #ffccf9; 
       background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f5500fbc-0bf2-45c7-817c-c2e06089b145/d66uiam-47b5275d-c26f-4cc1-950e-b0c5fe747b44.jpg/v1/fill/w_1024,h_768,q_75,strp/spider_man_wallpaper_black_by_thereaper87_d66uiam-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzY4IiwicGF0aCI6IlwvZlwvZjU1MDBmYmMtMGJmMi00NWM3LTgxN2MtYzJlMDYwODliMTQ1XC9kNjZ1aWFtLTQ3YjUyNzVkLWMyNmYtNGNjMS05NTBlLWIwYzVmZTc0N2I0NC5qcGciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.JmO5j32MQec-TADxDjqYa_9Y6JSg7DmIWUNlm2WDOaI');
     }
     #game-container {
-      border: 7px solid red; /* Hello Kitty pink border */
+      border: 7px solid red; 
       width: 400px;
       height: 600px;
       position: relative;
       overflow: hidden;
-      background-color: black; /* Light pastel pink */
+      background-color: black; 
     }
     #scoreboard {
       position: absolute;
       top: 10px;
       left: 10px;
-      color: red; /* Pink text */
+      color: red; 
       font-size: 20px;
-      font-family: 'Comic Sans MS', cursive, sans-serif; /* Playful font */
+      font-family: 'Comic Sans MS', cursive, sans-serif; 
       z-index: 10;
     }
     #game-over {
@@ -48,14 +48,14 @@
     #restart-btn {
       padding: 10px 20px;
       font-size: 18px;
-      background-color: red; /* Pink button */
+      background-color: red; 
       border: none;
       cursor: pointer;
       color: white;
       margin-top: 10px;
     }
     #restart-btn:hover {
-      background-color: red; /* Lighter pink */
+      background-color: red; 
     }
     canvas {
       display: block;
@@ -101,7 +101,7 @@
     const bowImg = new Image();
     bowImg.src = 'https://cdn.vectorstock.com/i/1000v/43/46/red-spider-and-web-on-black-background-vector-38664346.jpg';
 
-    // Mobile touch controls
+    
     canvas.addEventListener('touchstart', handleTouchStart);
     canvas.addEventListener('touchend', handleTouchEnd);
 
@@ -121,7 +121,7 @@
       direction = null;
     }
 
-    // Desktop mouse controls
+    
     canvas.addEventListener('mousedown', handleMouseClick);
 
     function handleMouseClick(e) {
@@ -140,7 +140,7 @@
       direction = null;
     });
 
-    // Keyboard controls for desktop
+    
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {
         direction = 'left';
