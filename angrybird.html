@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hello Kitty Racing Game</title>
   <style>
-    /* Your existing CSS */
+   
     * {
       margin: 0;
       padding: 0;
@@ -16,24 +16,24 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #63e5ff; /* Light pink background */
+      background-color: #63e5ff; 
       background-image: url('https://c4.wallpaperflare.com/wallpaper/203/123/608/angry-birds-party-wallpaper-preview.jpg');
     }
     #game-container {
-      border: 7px solid black; /* Hello Kitty pink border */
+      border: 7px solid black; 
       width: 400px;
       height: 600px;
       position: relative;
       overflow: hidden;
-      background-color:#98FB98; /* Light pastel pink */
+      background-color:#98FB98; 
     }
     #scoreboard {
       position: absolute;
       top: 10px;
       left: 10px;
-      color: green; /* Pink text */
+      color: green; 
       font-size: 20px;
-      font-family: 'Comic Sans MS', cursive, sans-serif; /* Playful font */
+      font-family: 'Comic Sans MS', cursive, sans-serif;
       z-index: 10;
     }
     #game-over {
@@ -42,20 +42,20 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: green; /* Pink text */
+      color: green; 
       text-align: center;
     }
     #restart-btn {
       padding: 10px 20px;
       font-size: 18px;
-      background-color: green; /* Pink button */
+      background-color: green; 
       border: none;
       cursor: pointer;
       color: white;
       margin-top: 10px;
     }
     #restart-btn:hover {
-      background-color: green; /* Lighter pink */
+      background-color: green; 
     }
     canvas {
       display: block;
@@ -101,7 +101,7 @@
     const bowImg = new Image();
     bowImg.src = 'https://static.wikia.nocookie.net/angrybirds/images/f/f8/HD_Utopia_Donut.png/revision/latest/scale-to-width-down/481?cb=20200716005247';
 
-    // Mobile touch controls
+    
     canvas.addEventListener('touchstart', handleTouchStart);
     canvas.addEventListener('touchend', handleTouchEnd);
 
@@ -121,7 +121,7 @@
       direction = null;
     }
 
-    // Desktop mouse controls
+    
     canvas.addEventListener('mousedown', handleMouseClick);
 
     function handleMouseClick(e) {
@@ -140,7 +140,7 @@
       direction = null;
     });
 
-    // Keyboard controls for desktop
+   
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {
         direction = 'left';
