@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hello Kitty Racing Game</title>
   <style>
-    /* Your existing CSS */
+   
     * {
       margin: 0;
       padding: 0;
@@ -16,24 +16,24 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: white; /* Light pink background */
+      background-color: white; 
       background-image: url('https://i.etsystatic.com/49105148/r/il/cd21e7/5739153656/il_300x300.5739153656_ftqs.jpg');
     }
     #game-container {
-      border: 8px solid #800000; /* Hello Kitty pink border */
+      border: 8px solid #800000; 
       width: 400px;
       height: 600px;
       position: relative;
       overflow: hidden;
-      background-color: white; /* Light pastel pink */
+      background-color: white; 
     }
     #scoreboard {
       position: absolute;
       top: 10px;
       left: 10px;
-      color: #C4A484; /* Pink text */
+      color: #C4A484; 
       font-size: 20px;
-      font-family: 'Comic Sans MS', cursive, sans-serif; /* Playful font */
+      font-family: 'Comic Sans MS', cursive, sans-serif; 
       z-index: 10;
     }
     #game-over {
@@ -42,20 +42,20 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: #C4A484; /* Pink text */
+      color: #C4A484; 
       text-align: center;
     }
     #restart-btn {
       padding: 10px 20px;
       font-size: 18px;
-      background-color: #C4A484; /* Pink button */
+      background-color: #C4A484; 
       border: none;
       cursor: pointer;
       color: white;
       margin-top: 10px;
     }
     #restart-btn:hover {
-      background-color: #C4A484; /* Lighter pink */
+      background-color: #C4A484; 
     }
     canvas {
       display: block;
@@ -101,7 +101,7 @@
     const bowImg = new Image();
     bowImg.src = 'https://i.pinimg.com/736x/54/a3/e5/54a3e5f67177d32f6689f69aaeee3ed8.jpg';
 
-    // Mobile touch controls
+    
     canvas.addEventListener('touchstart', handleTouchStart);
     canvas.addEventListener('touchend', handleTouchEnd);
 
@@ -121,7 +121,7 @@
       direction = null;
     }
 
-    // Desktop mouse controls
+    
     canvas.addEventListener('mousedown', handleMouseClick);
 
     function handleMouseClick(e) {
@@ -140,7 +140,6 @@
       direction = null;
     });
 
-    // Keyboard controls for desktop
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {
         direction = 'left';
