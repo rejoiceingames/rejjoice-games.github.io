@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hello Kitty Racing Game</title>
   <style>
-    
+    /* Your existing CSS */
     * {
       margin: 0;
       padding: 0;
@@ -16,24 +16,62 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #ffccf9; 
+      background-color: #ffccf9; /* Light pink background */
       background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f5500fbc-0bf2-45c7-817c-c2e06089b145/d66uiam-47b5275d-c26f-4cc1-950e-b0c5fe747b44.jpg/v1/fill/w_1024,h_768,q_75,strp/spider_man_wallpaper_black_by_thereaper87_d66uiam-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzY4IiwicGF0aCI6IlwvZlwvZjU1MDBmYmMtMGJmMi00NWM3LTgxN2MtYzJlMDYwODliMTQ1XC9kNjZ1aWFtLTQ3YjUyNzVkLWMyNmYtNGNjMS05NTBlLWIwYzVmZTc0N2I0NC5qcGciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.JmO5j32MQec-TADxDjqYa_9Y6JSg7DmIWUNlm2WDOaI');
     }
     #game-container {
-      border: 7px solid red; 
+      border: 7px solid red; /* Hello Kitty pink border */
       width: 400px;
       height: 600px;
       position: relative;
       overflow: hidden;
-      background-color: black; 
+      background-color: black; /* Light pastel pink */
     }
+#instructions {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
+      text-align: center;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+    #instructions h1 {
+      font-size: 24px;
+      color: red; 
+      margin-bottom: 20px;
+    }
+    #instructions p {
+      font-size: 18px;
+      margin-bottom: 30px;
+      color: black;
+    }
+    #start-btn {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #start-btn:hover {
+      background-color:  red;
+}
+
     #scoreboard {
       position: absolute;
       top: 10px;
       left: 10px;
-      color: red; 
+      color: red; /* Pink text */
       font-size: 20px;
-      font-family: 'Comic Sans MS', cursive, sans-serif; 
+      font-family: 'Comic Sans MS', cursive, sans-serif; /* Playful font */
       z-index: 10;
     }
     #game-over {
@@ -48,14 +86,14 @@
     #restart-btn {
       padding: 10px 20px;
       font-size: 18px;
-      background-color: red; 
+      background-color: red; /* Pink button */
       border: none;
       cursor: pointer;
       color: white;
       margin-top: 10px;
     }
     #restart-btn:hover {
-      background-color: red; 
+      background-color: red; /* Lighter pink */
     }
     canvas {
       display: block;
@@ -65,6 +103,17 @@
 <body>
 
   <div id="game-container">
+<!-- Instructions Screen -->
+    <div id="instructions">
+      <h1>Spiderman Welcomes You...!!</h1>
+      <p>
+        Instructions:<br>
+         -Tap on the left/right side of the screen to move.<br>
+        - Avoid obstacles (bows) and score as high as possible!
+      </p>
+      <button id="start-btn">Start Game</button>
+    </div>
+
     <div id="scoreboard">Score: 0</div>
     <canvas id="gameCanvas"></canvas>
     <div id="game-over">
@@ -78,6 +127,9 @@
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const scoreboard = document.getElementById('scoreboard');
+const instructionsScreen = document.getElementById('instructions');
+    const startButton = document.getElementById('start-btn');
+
     const gameOverScreen = document.getElementById('game-over');
     const finalScoreEl = document.getElementById('final-score');
     const restartBtn = document.getElementById('restart-btn');
@@ -96,12 +148,12 @@
     let distanceTraveled = 0;
 
     const helloKittyImg = new Image();
-    helloKittyImg.src = 'https://i.pinimg.com/736x/1a/c0/73/1ac0734b86a2fe4324cdc250be666b69.jpg';
+    helloKittyImg.src = 'https://i.postimg.cc/Fs5CXPNR/Screenshot-2024-11-29-181708-removebg-preview.png';
 
     const bowImg = new Image();
-    bowImg.src = 'https://cdn.vectorstock.com/i/1000v/43/46/red-spider-and-web-on-black-background-vector-38664346.jpg';
+    bowImg.src = 'https://i.postimg.cc/cCXvh9cm/Screenshot-2024-11-29-181835-removebg-preview.png';
 
-    
+    // Mobile touch controls
     canvas.addEventListener('touchstart', handleTouchStart);
     canvas.addEventListener('touchend', handleTouchEnd);
 
@@ -110,88 +162,55 @@
       const rect = canvas.getBoundingClientRect();
       const canvasX = touchX - rect.left;
 
-      if (canvasX < canvas.width / 2) {
-        direction = 'left';
-      } else {
-        direction = 'right';
-      }
+      direction = canvasX < canvas.width / 2 ? 'left' : 'right';
     }
 
     function handleTouchEnd() {
       direction = null;
     }
 
-    
-    canvas.addEventListener('mousedown', handleMouseClick);
-
-    function handleMouseClick(e) {
+    // Mouse Click Controls
+    canvas.addEventListener('mousedown', (e) => {
       const clickX = e.clientX;
       const rect = canvas.getBoundingClientRect();
       const canvasX = clickX - rect.left;
 
-      if (canvasX < canvas.width / 2) {
-        direction = 'left';
-      } else {
-        direction = 'right';
-      }
-    }
+      direction = canvasX < canvas.width / 2 ? 'left' : 'right';
+    });
 
     canvas.addEventListener('mouseup', () => {
       direction = null;
     });
 
-    
+    // Keyboard Controls
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') {
-        direction = 'left';
-      } else if (e.key === 'ArrowRight') {
-        direction = 'right';
-      }
+      if (e.key === 'ArrowLeft') direction = 'left';
+      if (e.key === 'ArrowRight') direction = 'right';
     });
 
     document.addEventListener('keyup', (e) => {
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-        direction = null;
-      }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') direction = null;
     });
 
     function drawSnake() {
-      snake.forEach(part => {
-        ctx.drawImage(helloKittyImg, part.x, part.y, part.width, part.height);
-      });
+      snake.forEach(part => ctx.drawImage(helloKittyImg, part.x, part.y, part.width, part.height));
     }
 
     function updateSnakePosition() {
       if (direction) {
         let head = { ...snake[0] };
-
-        if (direction === 'left') {
-          head.x -= speed;
-        } else if (direction === 'right') {
-          head.x += speed;
-        }
-
-        if (head.x < 0) head.x = 0;
-        if (head.x + head.width > canvas.width) head.x = canvas.width - head.width;
-
+        head.x += direction === 'left' ? -speed : speed;
+        head.x = Math.max(0, Math.min(canvas.width - head.width, head.x));
         snake.unshift(head);
         snake.pop();
       }
-
       distanceTraveled += obstacleSpeed;
       score = Math.floor(distanceTraveled / 10);
       scoreboard.textContent = 'Score: ' + score;
-
-      if (score >= 500 && score % 500 === 0) {
-        speed += 1;
-        obstacleSpeed += 0.5;
-      }
     }
 
     function createObstacle() {
-      let width = 50;
-      let height = 50;
-      let x = Math.random() * (canvas.width - width);
+      let width = 50, height = 50, x = Math.random() * (canvas.width - width);
       obstacles.push({ x, y: -height, width, height });
     }
 
@@ -204,10 +223,12 @@
 
     function checkCollision() {
       obstacles.forEach(obstacle => {
-        if (snake[0].x < obstacle.x + obstacle.width &&
-            snake[0].x + snake[0].width > obstacle.x &&
-            snake[0].y < obstacle.y + obstacle.height &&
-            snake[0].y + snake[0].height > obstacle.y) {
+        if (
+          snake[0].x < obstacle.x + obstacle.width &&
+          snake[0].x + snake[0].width > obstacle.x &&
+          snake[0].y < obstacle.y + obstacle.height &&
+          snake[0].y + snake[0].height > obstacle.y
+        ) {
           gameOver = true;
           endGame();
         }
@@ -222,38 +243,31 @@
 
     restartBtn.addEventListener('click', () => {
       gameOverScreen.style.display = 'none';
-      score = 0;
-      distanceTraveled = 0;
       snake = [{ x: 190, y: 500, width: 50, height: 50 }];
       obstacles = [];
+      score = 0;
+      distanceTraveled = 0;
       direction = null;
       gameOver = false;
-      scoreboard.textContent = 'Score: 0';
-      speed = 5;
-      obstacleSpeed = 3;
+      gameLoop();
+    });
+
+    startButton.addEventListener('click', () => {
+      instructionsScreen.style.display = 'none';
       gameLoop();
     });
 
     function gameLoop() {
       if (gameOver) return;
-
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       updateSnakePosition();
       drawSnake();
-
-      if (Math.random() < obstacleGenerationRate) {
-        createObstacle();
-      }
-
+      if (Math.random() < obstacleGenerationRate) createObstacle();
       drawObstacles();
       checkCollision();
-
       requestAnimationFrame(gameLoop);
     }
-
-    gameLoop();
-
   </script>
-
 </body>
 </html>
+
