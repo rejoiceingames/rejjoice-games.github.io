@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hello Kitty Racing Game</title>
   <style>
-   
     * {
       margin: 0;
       padding: 0;
@@ -25,7 +24,44 @@
       height: 600px;
       position: relative;
       overflow: hidden;
-      background-color:#98FB98; 
+      background-color: #98FB98; 
+    }
+    #instructions {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
+      text-align: center;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+    #instructions h1 {
+      font-size: 24px;
+      color: green; 
+      margin-bottom: 20px;
+    }
+    #instructions p {
+      font-size: 18px;
+      margin-bottom: 30px;
+      color: black;
+    }
+    #start-btn {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: green;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #start-btn:hover {
+      background-color: darkgreen;
     }
     #scoreboard {
       position: absolute;
@@ -48,14 +84,14 @@
     #restart-btn {
       padding: 10px 20px;
       font-size: 18px;
-      background-color: green; 
+      background-color: green;
       border: none;
       cursor: pointer;
       color: white;
       margin-top: 10px;
     }
     #restart-btn:hover {
-      background-color: green; 
+      background-color: darkgreen;
     }
     canvas {
       display: block;
@@ -65,6 +101,18 @@
 <body>
 
   <div id="game-container">
+    <!-- Instructions Screen -->
+    <div id="instructions">
+      <h1>Angry Bird Welcomes You...!!</h1>
+      <p>
+        Instructions:<br>
+         -Tap on the left/right side of the screen to move.<br>
+        - Avoid obstacles (bows) and score as high as possible!
+      </p>
+      <button id="start-btn">Start Game</button>
+    </div>
+
+    <!-- Game Content -->
     <div id="scoreboard">Score: 0</div>
     <canvas id="gameCanvas"></canvas>
     <div id="game-over">
@@ -78,6 +126,8 @@
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const scoreboard = document.getElementById('scoreboard');
+    const instructionsScreen = document.getElementById('instructions');
+    const startButton = document.getElementById('start-btn');
     const gameOverScreen = document.getElementById('game-over');
     const finalScoreEl = document.getElementById('final-score');
     const restartBtn = document.getElementById('restart-btn');
@@ -96,12 +146,12 @@
     let distanceTraveled = 0;
 
     const helloKittyImg = new Image();
-    helloKittyImg.src = 'https://www.shutterstock.com/image-vector/angry-bird-character-illustration-white-600nw-2494478905.jpg';
+    helloKittyImg.src = 'https://i.postimg.cc/tCKP7fY0/Screenshot-2024-11-29-180820-removebg-preview.png';
 
     const bowImg = new Image();
-    bowImg.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxbTWi8r-ANMQ-wNcmcZOnigk323QipW9NTQ&s';
+    bowImg.src = 'https://i.postimg.cc/T1yL3qxY/Screenshot-2024-11-29-180921-removebg-preview.png';
 
-    
+    // Touch Controls
     canvas.addEventListener('touchstart', handleTouchStart);
     canvas.addEventListener('touchend', handleTouchEnd);
 
@@ -110,88 +160,55 @@
       const rect = canvas.getBoundingClientRect();
       const canvasX = touchX - rect.left;
 
-      if (canvasX < canvas.width / 2) {
-        direction = 'left';
-      } else {
-        direction = 'right';
-      }
+      direction = canvasX < canvas.width / 2 ? 'left' : 'right';
     }
 
     function handleTouchEnd() {
       direction = null;
     }
 
-    
-    canvas.addEventListener('mousedown', handleMouseClick);
-
-    function handleMouseClick(e) {
+    // Mouse Click Controls
+    canvas.addEventListener('mousedown', (e) => {
       const clickX = e.clientX;
       const rect = canvas.getBoundingClientRect();
       const canvasX = clickX - rect.left;
 
-      if (canvasX < canvas.width / 2) {
-        direction = 'left';
-      } else {
-        direction = 'right';
-      }
-    }
+      direction = canvasX < canvas.width / 2 ? 'left' : 'right';
+    });
 
     canvas.addEventListener('mouseup', () => {
       direction = null;
     });
 
-   
+    // Keyboard Controls
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') {
-        direction = 'left';
-      } else if (e.key === 'ArrowRight') {
-        direction = 'right';
-      }
+      if (e.key === 'ArrowLeft') direction = 'left';
+      if (e.key === 'ArrowRight') direction = 'right';
     });
 
     document.addEventListener('keyup', (e) => {
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-        direction = null;
-      }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') direction = null;
     });
 
     function drawSnake() {
-      snake.forEach(part => {
-        ctx.drawImage(helloKittyImg, part.x, part.y, part.width, part.height);
-      });
+      snake.forEach(part => ctx.drawImage(helloKittyImg, part.x, part.y, part.width, part.height));
     }
 
     function updateSnakePosition() {
       if (direction) {
         let head = { ...snake[0] };
-
-        if (direction === 'left') {
-          head.x -= speed;
-        } else if (direction === 'right') {
-          head.x += speed;
-        }
-
-        if (head.x < 0) head.x = 0;
-        if (head.x + head.width > canvas.width) head.x = canvas.width - head.width;
-
+        head.x += direction === 'left' ? -speed : speed;
+        head.x = Math.max(0, Math.min(canvas.width - head.width, head.x));
         snake.unshift(head);
         snake.pop();
       }
-
       distanceTraveled += obstacleSpeed;
       score = Math.floor(distanceTraveled / 10);
       scoreboard.textContent = 'Score: ' + score;
-
-      if (score >= 500 && score % 500 === 0) {
-        speed += 1;
-        obstacleSpeed += 0.5;
-      }
     }
 
     function createObstacle() {
-      let width = 50;
-      let height = 50;
-      let x = Math.random() * (canvas.width - width);
+      let width = 50, height = 50, x = Math.random() * (canvas.width - width);
       obstacles.push({ x, y: -height, width, height });
     }
 
@@ -204,10 +221,12 @@
 
     function checkCollision() {
       obstacles.forEach(obstacle => {
-        if (snake[0].x < obstacle.x + obstacle.width &&
-            snake[0].x + snake[0].width > obstacle.x &&
-            snake[0].y < obstacle.y + obstacle.height &&
-            snake[0].y + snake[0].height > obstacle.y) {
+        if (
+          snake[0].x < obstacle.x + obstacle.width &&
+          snake[0].x + snake[0].width > obstacle.x &&
+          snake[0].y < obstacle.y + obstacle.height &&
+          snake[0].y + snake[0].height > obstacle.y
+        ) {
           gameOver = true;
           endGame();
         }
@@ -222,38 +241,30 @@
 
     restartBtn.addEventListener('click', () => {
       gameOverScreen.style.display = 'none';
-      score = 0;
-      distanceTraveled = 0;
       snake = [{ x: 190, y: 500, width: 50, height: 50 }];
       obstacles = [];
+      score = 0;
+      distanceTraveled = 0;
       direction = null;
       gameOver = false;
-      scoreboard.textContent = 'Score: 0';
-      speed = 5;
-      obstacleSpeed = 3;
+      gameLoop();
+    });
+
+    startButton.addEventListener('click', () => {
+      instructionsScreen.style.display = 'none';
       gameLoop();
     });
 
     function gameLoop() {
       if (gameOver) return;
-
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       updateSnakePosition();
       drawSnake();
-
-      if (Math.random() < obstacleGenerationRate) {
-        createObstacle();
-      }
-
+      if (Math.random() < obstacleGenerationRate) createObstacle();
       drawObstacles();
       checkCollision();
-
       requestAnimationFrame(gameLoop);
     }
-
-    gameLoop();
-
   </script>
-
 </body>
 </html>
