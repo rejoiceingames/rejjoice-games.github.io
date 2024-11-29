@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hello Kitty Racing Game</title>
   <style>
-    
     * {
       margin: 0;
       padding: 0;
@@ -16,24 +15,61 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #ffccf9; 
+      background-color: #ffccf9; /* Light pink background */
       background-image: url('https://wallpapercave.com/wp/wp7937372.jpg');
     }
     #game-container {
-      border: 7px solid #ff69b4;
+      border: 7px solid #ff69b4; /* Hello Kitty pink border */
       width: 400px;
       height: 600px;
       position: relative;
       overflow: hidden;
-      background-color: white; 
+      background-color: white; /* Light pastel pink */
+    }
+    #instructions {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
+      text-align: center;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+    #instructions h1 {
+      font-size: 24px;
+      color: #ff69b4; 
+      margin-bottom: 20px;
+    }
+    #instructions p {
+      font-size: 18px;
+      margin-bottom: 30px;
+      color: black;
+    }
+    #start-btn {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #start-btn:hover {
+      background-color: #63e5ff;
     }
     #scoreboard {
       position: absolute;
       top: 10px;
       left: 10px;
-      color: #ff69b4; 
+      color: #ff69b4; /* Pink text */
       font-size: 20px;
-      font-family: 'Comic Sans MS', cursive, sans-serif; 
+      font-family: 'Comic Sans MS', cursive, sans-serif; /* Playful font */
       z-index: 10;
     }
     #game-over {
@@ -42,20 +78,20 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: #ff69b4; 
+      color: #ff69b4; /* Pink text */
       text-align: center;
     }
     #restart-btn {
       padding: 10px 20px;
       font-size: 18px;
-      background-color: #ff69b4; 
+      background-color: #ff69b4; /* Pink button */
       border: none;
       cursor: pointer;
       color: white;
       margin-top: 10px;
     }
     #restart-btn:hover {
-      background-color: #ffb6c1; 
+      background-color: #ffb6c1; /* Lighter pink */
     }
     canvas {
       display: block;
@@ -65,6 +101,17 @@
 <body>
 
   <div id="game-container">
+    <!-- Instructions Screen -->
+    <div id="instructions">
+      <h1>Hello Kitty Welcomes You...!!</h1>
+      <p>
+        Instructions:<br>
+        - Tap on the left/right side of the screen to move.<br>
+        - Avoid obstacles (bows) and score as high as possible!
+      </p>
+      <button id="start-btn">Start Game</button>
+    </div>
+
     <div id="scoreboard">Score: 0</div>
     <canvas id="gameCanvas"></canvas>
     <div id="game-over">
@@ -81,6 +128,8 @@
     const gameOverScreen = document.getElementById('game-over');
     const finalScoreEl = document.getElementById('final-score');
     const restartBtn = document.getElementById('restart-btn');
+    const startBtn = document.getElementById('start-btn');
+    const instructionsScreen = document.getElementById('instructions');
 
     canvas.width = 400;
     canvas.height = 600;
@@ -96,12 +145,23 @@
     let distanceTraveled = 0;
 
     const helloKittyImg = new Image();
-    helloKittyImg.src = 'https://i.pinimg.com/736x/bd/a0/b0/bda0b0678516640ea80046047d0878b8.jpg';
+    helloKittyImg.src = 'https://i.postimg.cc/TwN0s9QR/Screenshot-2024-11-29-181325-removebg-preview.png';
 
     const bowImg = new Image();
-    bowImg.src = 'https://www.shutterstock.com/image-illustration/hello-kittys-pink-bow-260nw-2378708239.jpg';
+    bowImg.src = 'https://i.postimg.cc/BQHyjrMH/Screenshot-2024-11-29-181545-removebg-preview.png';
 
-   
+    // Function to start the game
+    function startGame() {
+      // Hide the instructions screen
+      instructionsScreen.style.display = 'none';
+      // Start the game loop
+      gameLoop();
+    }
+
+    // Add event listener for the "Start" button
+    startBtn.addEventListener('click', startGame);
+
+    // Mobile touch controls
     canvas.addEventListener('touchstart', handleTouchStart);
     canvas.addEventListener('touchend', handleTouchEnd);
 
@@ -121,7 +181,7 @@
       direction = null;
     }
 
-   
+    // Desktop mouse controls
     canvas.addEventListener('mousedown', handleMouseClick);
 
     function handleMouseClick(e) {
@@ -140,7 +200,7 @@
       direction = null;
     });
 
-  
+    // Keyboard controls for desktop
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') {
         direction = 'left';
@@ -224,35 +284,27 @@
       gameOverScreen.style.display = 'none';
       score = 0;
       distanceTraveled = 0;
-      snake = [{ x: 190, y: 500, width: 50, height: 50 }];
-      obstacles = [];
-      direction = null;
-      gameOver = false;
-      scoreboard.textContent = 'Score: 0';
       speed = 5;
       obstacleSpeed = 3;
+      direction = null;
+      gameOver = false;
+      obstacles = [];
+      snake = [{ x: 190, y: 500, width: 50, height: 50 }];
       gameLoop();
     });
 
     function gameLoop() {
-      if (gameOver) return;
+      if (Math.random() < obstacleGenerationRate) createObstacle();
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      updateSnakePosition();
+
       drawSnake();
-
-      if (Math.random() < obstacleGenerationRate) {
-        createObstacle();
-      }
-
+      updateSnakePosition();
       drawObstacles();
       checkCollision();
 
-      requestAnimationFrame(gameLoop);
+      if (!gameOver) requestAnimationFrame(gameLoop);
     }
-
-    gameLoop();
-
   </script>
 
 </body>
